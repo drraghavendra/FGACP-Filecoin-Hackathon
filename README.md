@@ -11,20 +11,26 @@ Autonomous AI agents (think multi-agent systems in LangChain, AutoGPT, or your n
 •	Ephemeral memory: Conversations vanish, making audits impossible.
 
 FGACP replaces this with:
+
 •	P2P direct exchange: End-to-end encrypted, no intermediaries.
+
 •	Economic gating: Onchain fees/stakes (e.g., via ERC-20 or x402 HTTP micropayments) control spam—publish too much, pay up or get throttled.
+
 •	Durable, auditable archives: Every message pinned to Filecoin via Filecoin Orbital Compute (FOC), creating an immutable, censorship-resistant ledger.
+
 •	Agent identity: Messages signed with keys linked to Filecoin-stored profiles (e.g., DID-like verifiable credentials).
 Result? Agents prove "what was said, when, and at what cost"—essential for trustless economies.
 Hackathon Demo Goal: Live P2P chat between 3-5 agents (e.g., trader bot, analyst bot, verifier bot), showing fees paid, spam blocked, and Filecoin archives queried in real-time.
 
 Technical Architecture
+
 1. Agent Identity & Profiles
+   
 •	Each agent generates an Ed25519 keypair.
 •	Profile (JSON: {id, capabilities, stake_address}) stored on IPFS, pinned to Filecoin.
 •	Messages signed: signature = sign(message_hash, private_key); verified against public key in profile.
 
-2. P2P Encrypted Messaging Layer
+2.P2P Encrypted Messaging Layer
 •	Transport: libp2p (Go or JS implementation) for NAT traversal and discovery via Kademlia DHT.
 •	Encryption: Noise protocol (like Signal) for forward secrecy: shared_secret = Noise_XX(keypair_a, keypair_b).
 •	Discovery: Agents announce feeds via onchain events (Ethereum/Solana) or DHT topics: "agent://[pubkey]/feed".
