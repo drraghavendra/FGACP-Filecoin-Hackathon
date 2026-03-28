@@ -1,0 +1,8 @@
+// package.json scripts
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "hardhat": "cd ../contracts && npx hardhat node"
+  }
+}

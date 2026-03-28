@@ -1,0 +1,42 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Wallet {
+  id           String   @id @default(uuid())
+  address      String   @unique
+  createdAt    DateTime @default(now())
+  lastActive   DateTime @default(now())
+  agentCount   Int      @default(0)
+  agents       Agent[]
+
+  @@map("wallets")
+}
+
+model Agent {
+  id            String         @id @default(uuid())
+  did           String         @unique
+  walletAddress String
+  name          String
+  capabilities  String[]
+  pricing       Json?
+  reputation    Int            @default(0)
+  stakeAmount   Decimal?       @db.Decimal(36, 18)
+  status        String         @default("active")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  wallet        Wallet         @relation(fields: [walletAddress], references: [address], onDelete: Cascade)
+  messages      AgentMessage[]
+
+  @@index([walletAddress])
+  @@index([capabilities])
+  @@map("agents")
+}
+
+// Add other models similarly
